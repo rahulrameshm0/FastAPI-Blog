@@ -21,6 +21,7 @@ posts: list[dict] = [
         "content": "This framework is really easy to use and super fast.",
         "date_posted": "April 20, 2025",
     },
+    
     {
         "id": 2,
         "author": "Jane Doe",
