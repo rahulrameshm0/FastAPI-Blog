@@ -1,4 +1,5 @@
-from pydantic import BaseModel, ConfigDict, Field
+from datetime import datetime
+from pydantic import BaseModel, ConfigDict, Field, EmailStr
 
 class PostBase(BaseModel):
     title: str = Field(min_length=1, max_length=100)
