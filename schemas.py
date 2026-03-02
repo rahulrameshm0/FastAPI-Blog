@@ -19,13 +19,14 @@ class UserResponse(UserBase):
 class PostBase(BaseModel):
     title: str = Field(min_length=1, max_length=100)
     content: str = Field(min_length=1)
-    author: str = Field(min_length=1, max_length=50)
 
 class PostCreate(PostBase):
-    pass
+    user_id: int #Temporary
 
 class PostResponse(PostBase):
     model_config  = ConfigDict(from_attributes=True)
 
     id: int
+    user_id: int
     date_posted: str 
+    author: UserResponse
