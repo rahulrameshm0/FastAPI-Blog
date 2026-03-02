@@ -14,7 +14,7 @@ class User(Base):
     username: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
     email: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
     image_file: Mapped[str | None] = mapped_column(String(200), default=None, nullable=True)
-    post: Mapped[list[Post]] = relationship(back_populates="author")
+    posts: Mapped[list[Post]] = relationship(back_populates="author")
 
     @property
     def image_path(self) -> str:
@@ -24,9 +24,10 @@ class User(Base):
     
 
 class Post(Base):
+    __tablename__ = "posts" 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, index=True)
     title: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
     content: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
-    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=True, index=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=True, index=True)
     date_posted: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(UTC))
     author: Mapped[User] = relationship(back_populates="posts")
