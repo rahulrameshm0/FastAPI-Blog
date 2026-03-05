@@ -45,8 +45,6 @@ async def home(request:Request,db:Annotated[AsyncSession, Depends(get_db)]):
     posts = result.scalars().all()
     return templates.TemplateResponse(request, "home.html", {"posts":posts, "title":"Home"})
 
-
-
 @app.get("/posts/{post_id}", include_in_schema=False)
 async def post_page(request: Request, post_id: int, db:Annotated[AsyncSession, Depends(get_db)]):
     result = await db.execute(select(models.Post).options(selectinload(models.Post.author)).where(models.Post.id == post_id))
@@ -86,7 +84,6 @@ async def user_posts_page(
         {"posts": posts, "user": user, "title": f"{user.username}'s Posts"},
     )
 
-
 @app.exception_handler(starletteHTTPException)
 async def general_http_exception_handler(request:Request, exception: starletteHTTPException):
     if request.url.path.startswith("/api"):
@@ -96,7 +93,6 @@ async def general_http_exception_handler(request:Request, exception: starletteHT
         exception.detail
         if exception.detail else "An error occured. Please check your request and try again"
     )
-
 
     return templates.TemplateResponse(
         request,
