@@ -121,7 +121,7 @@
     } from "/static/js/utils.js";
 
     // Get post ID from Jinja2 template
-    const postId = {{ post.id | tojson }};
+    const postId = {{ post.id }};
     // Edit Post Form Handler
     const editForm = document.getElementById("editPostForm");
     editForm.addEventListener("submit", async (event) => {
