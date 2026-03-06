@@ -35,7 +35,7 @@ app.mount("/media", StaticFiles(directory="media"), name="media")
 
 templates = Jinja2Templates(directory="templates")
 
-app.include_router(users.router, prefix="/api/usres", tags=["users"])
+app.include_router(users.router, prefix="/api/users", tags=["users"])
 app.include_router(posts.router, prefix="/api/posts", tags=["posts"])
 
 @app.get("/", include_in_schema=False, name="home")
@@ -84,6 +84,26 @@ async def user_posts_page(
         {"posts": posts, "user": user, "title": f"{user.username}'s Posts"},
     )
 
+
+## login and register template_routes
+@app.get("/login", include_in_schema=False)
+async def login_page(request: Request):
+    return templates.TemplateResponse(
+        request,
+        "login.html",
+        {"title": "Login"},
+    )
+
+
+@app.get("/register", include_in_schema=False)
+async def register_page(request: Request):
+    return templates.TemplateResponse(
+        request,
+        "register.html",
+        {"title": "Register"},
+    )
+
+
 @app.exception_handler(starletteHTTPException)
 async def general_http_exception_handler(request:Request, exception: starletteHTTPException):
     if request.url.path.startswith("/api"):
@@ -109,7 +129,7 @@ async def general_http_exception_handler(request:Request, exception: starletteHT
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exception:RequestValidationError):
     if request.url.path.startswith("/api"):
-        return await http_exception_handler(request, exception)
+        return await request_validation_exception_handler(request, exception)
     return templates.TemplateResponse(
         request,
         "error.html",
